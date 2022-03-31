@@ -37,13 +37,6 @@ const STEP = 2;
 const MAX_DISTANCE = 10;
 const distance = (a: any, b: any) => Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 
-const drawPlanetBlank = (context: any, planet: any, space: any) => {
-  context.beginPath();
-  context.arc((planet.x - (- space.minX)) * SCALING_FACTOR, (planet.y - (-space.minY)) * SCALING_FACTOR, SCALING_FACTOR * 0.5, 0, 2 * Math.PI);
-  context.fillStyle = 'white';
-  context.fill();
-}
-
 const drawPlanet = (context: any, planet: any, space: any) => {
   if (planet.owner) {
     context.fillStyle = addressToColor(planet.owner.id);

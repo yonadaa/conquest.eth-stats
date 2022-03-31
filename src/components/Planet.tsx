@@ -5,8 +5,8 @@ import {
 } from "@apollo/client";
 import { useParams } from 'react-router-dom';
 import { formatAllianceOnlyBlockie, formatEvent, formatOwner, formatTimestamp } from './Helpers';
-import MapPlanet from './MapPlanet';
 import * as ethers from 'ethers';
+import MapSingle from './MapSingle';
 const planetsABI = require("./IOuterSpacePlanets.json");
 
 const PLANET = gql`
@@ -67,7 +67,7 @@ function Planet() {
     <div>
       <h1>Planet {planet.x}, {planet.y}</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <MapPlanet id={planet.id} />
+        <MapSingle color="red" condition={(p) => p.id === planet.id} />
         <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey' }}><div style={{ justifyContent: 'center', alignContent: 'center' }}>
           <h3><b>{planet.x}, {planet.y}</b></h3>
           <h5>Immutable statistics</h5>

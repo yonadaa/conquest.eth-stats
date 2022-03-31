@@ -6,8 +6,9 @@ import {
 import { useParams } from 'react-router-dom';
 import { formatAllianceOnlyBlockie, formatEvent, formatFleet, formatPlanet, formatTimestamp, formatTokens } from './Helpers';
 import { Container, Row, Col } from 'react-bootstrap';
-import MapOwner from './MapOwner';
 import Blockies from 'react-blockies';
+import MapSingle from './MapSingle';
+import { addressToColor } from './Map';
 
 const OWNER = gql`
   query GetOwner($id: String) {
@@ -64,12 +65,12 @@ function Owner() {
 
   return (
     <div>
-      <h1>Owner {owner.id.slice(0, 7)}...</h1>
+      <h1>Owner {owner.id.slice(0, 4)}...{owner.id.slice(-4)}</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <MapOwner id={owner.id} />
+        <MapSingle color={addressToColor(owner.id)} condition={(p) => p.owner && p.owner.id === owner.id} />
         <div >
           <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
-            <h3><b>{owner.id.slice(0, 8)}...</b></h3>
+            <h3><b>{owner.id.slice(0, 4)}...{owner.id.slice(-4)}</b></h3>
             <Blockies scale={15} seed={owner.id} className="border border-2 border-dark" />
             <h5>Overview</h5>
             <table className='table table-info'>
