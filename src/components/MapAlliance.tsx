@@ -51,7 +51,8 @@ const PlanetCanvas = ({ id, planets, space, width, height }: { id: string, plane
 
   useEffect(() => {
     const context = canvas.current.getContext('2d');
-    context.clearRect(0, 0, 100000, 100000);
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, 10000, 10000)
     context.fillStyle = 'black';
     context.fillRect(0, ((0 - (- space.minY))) * SCALING_FACTOR, 10000, 1);
     context.fillRect(((0 - (- space.minX))) * SCALING_FACTOR, 0, 1, 10000);
