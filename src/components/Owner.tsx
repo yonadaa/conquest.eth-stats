@@ -71,7 +71,7 @@ function Owner() {
           <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
             <h3><b>{owner.id.slice(0, 8)}...</b></h3>
             <Blockies scale={15} seed={owner.id} className="border border-2 border-dark" />
-            <h5>Statistics</h5>
+            <h5>Overview</h5>
             <table className='table table-info'>
               <tbody>
                 <tr>
