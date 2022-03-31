@@ -10,6 +10,7 @@ import { formatOwner, formatTokens } from './Helpers';
 const ALLIANCE = gql`
   query GetAlliance($id: String) {
     alliance(id:$id) {
+      id
       members {
         id
         owner {
@@ -67,12 +68,30 @@ function Alliance() {
 
   const alliance = data.alliance;
 
-  console.log(alliance)
   return (
     <div>
       <h1>Alliance {id ? id.slice(0, 8) : "null"}...</h1>
-      <a href={`https://basic-alliances-beta.conquest.etherplay.io/alliances/#${id}`}>Admin page</a>
-      {id ? <MapAlliance id={id} /> : null}
+      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+        {id ? <MapAlliance id={id} /> : null}
+        <div >
+          <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
+            <h3><b>{alliance.id.slice(0, 8)}...</b></h3>
+            <h5>Statistics</h5>
+            <table className='table table-info'>
+              <tbody>
+                <tr>
+                  <td><b>Member count</b></td>
+                  <td>{alliance.members.length}</td>
+                </tr>
+                <tr>
+                  <td><b>Admin page</b></td>
+                  <td><a href={`https://basic-alliances-beta.conquest.etherplay.io/alliances/#${id}`}>Click here</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
       <h3>Members</h3>
       <OwnersTable owners={alliance.members.map((m: any) => m.owner)} />
     </div>

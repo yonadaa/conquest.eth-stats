@@ -31,7 +31,7 @@ const PLANETS = gql`
   }
 `
 
-const SCALING_FACTOR = 3;
+const SCALING_FACTOR = 2.25;
 
 const drawPlanet = (context: any, planet: any, space: any) => {
   context.beginPath();
