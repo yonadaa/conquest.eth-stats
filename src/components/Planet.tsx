@@ -68,7 +68,7 @@ function Planet() {
       <h1>Planet {planet.x}, {planet.y}</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         <MapPlanet id={planet.id} />
-        <div style={{ display: 'flex', flexDirection: 'column', border: 'solid', borderWidth: 1, borderColor: 'grey' }}><div style={{ justifyContent: 'center', alignContent: 'center' }}>
+        <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey' }}><div style={{ justifyContent: 'center', alignContent: 'center' }}>
           <h3><b>{planet.x}, {planet.y}</b></h3>
           <h5>Immutable statistics</h5>
           {state ?

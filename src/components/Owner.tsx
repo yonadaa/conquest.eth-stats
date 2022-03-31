@@ -4,7 +4,7 @@ import {
   gql
 } from "@apollo/client";
 import { useParams } from 'react-router-dom';
-import { formatAlliance, formatEvent, formatFleet, formatPlanet, formatTimestamp, formatTokens } from './Helpers';
+import { formatAlliance, formatAllianceOnlyBlockie, formatEvent, formatFleet, formatPlanet, formatTimestamp, formatTokens } from './Helpers';
 import { Container, Row, Col } from 'react-bootstrap';
 import MapOwner from './MapOwner';
 
@@ -63,10 +63,36 @@ function Owner() {
 
   return (
     <div>
-      <h1>Owner {owner.id.slice(0, 8)}...</h1>
-      <p>current stake: {formatTokens(parseInt(owner.currentStake))} | balance: {formatTokens(parseInt(owner.tokenBalance))} | planets owned: {owner.planets.length} | unresolved fleets: {owner.fleets.length}</p>
-      <a href={` https://account-service-beta.rim.workers.dev/get/${data.owner.id}`}>Contact details</a>
-      <MapOwner id={owner.id} />
+      <h1>Owner {owner.id.slice(0, 7)}...</h1>
+      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+        <MapOwner id={owner.id} />
+        <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey' }}>
+          <div style={{ justifyContent: 'center', alignContent: 'center' }}>
+            <h3><b>{owner.id.slice(0, 8)}...</b></h3>
+            <h5>Statistics</h5>
+            <table className='table table-info'>
+              <tbody>
+                <tr>
+                  <td><b>Alliances</b></td>
+                  <td>{owner.alliances.length > 0 ? owner.alliances.map((a: any) => <span style={{ padding: 4 }}>{formatAllianceOnlyBlockie(a.alliance)}</span>) : "None"}</td>
+                </tr>
+                <tr>
+                  <td><b>Current stake</b></td>
+                  <td>{formatTokens(parseInt(owner.currentStake))}</td>
+                </tr>
+                <tr>
+                  <td><b>Balance</b></td>
+                  <td>{formatTokens(parseInt(owner.tokenBalance))}</td>
+                </tr>
+                <tr>
+                  <td><b>Contact details</b></td>
+                  <td><a href={` https://account-service-beta.rim.workers.dev/get/${data.owner.id}`}>Click here</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
       <Container>
         <Row>
           <Col>
