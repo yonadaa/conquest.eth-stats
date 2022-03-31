@@ -141,24 +141,6 @@ function Owner() {
               </tbody>
             </table>
           </Col>
-          <Col>
-            <h3>Alliances</h3>
-            <p><i>{owner.alliances.length} results.</i></p>
-            <table className='table table-secondary'>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                </tr>
-              </thead>
-              <tbody>
-                {owner.alliances.length > 0 ? owner.alliances.map((a: any) =>
-                  <tr key={a.alliance.id}>
-                    <td>{formatAlliance(a.alliance)}</td>
-                  </tr>
-                ) : "This owner is not a member of any alliances!"}
-              </tbody>
-            </table>
-          </Col>
         </Row>
         <Row>
           <Col>
