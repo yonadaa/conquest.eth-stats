@@ -66,8 +66,8 @@ function Owner() {
       <h1>Owner {owner.id.slice(0, 7)}...</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         <MapOwner id={owner.id} />
-        <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey' }}>
-          <div style={{ justifyContent: 'center', alignContent: 'center' }}>
+        <div >
+          <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
             <h3><b>{owner.id.slice(0, 8)}...</b></h3>
             <h5>Statistics</h5>
             <table className='table table-info'>
