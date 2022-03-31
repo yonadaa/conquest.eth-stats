@@ -68,7 +68,8 @@ function Planet() {
       <h1>Planet {planet.x}, {planet.y}</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         <MapPlanet id={planet.id} />
-        <div style={{ display: 'flex', flexDirection: 'column' }}><div style={{ justifyContent: 'center', alignContent: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', border: 'solid', borderWidth: 1, borderColor: 'grey' }}><div style={{ justifyContent: 'center', alignContent: 'center' }}>
+          <h3><b>{planet.x}, {planet.y}</b></h3>
           <h5>Immutable statistics</h5>
           {state ?
             <table className='table table-info'>
@@ -128,7 +129,6 @@ function Planet() {
               </tbody>
             </table>
           </div>
-          <a href="https://knowledge.conquest.etherplay.io/fundamentals/planets">Planet KB</a>
         </div>
       </div>
       <h3>Events</h3>
