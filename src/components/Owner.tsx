@@ -4,9 +4,10 @@ import {
   gql
 } from "@apollo/client";
 import { useParams } from 'react-router-dom';
-import { formatAlliance, formatAllianceOnlyBlockie, formatEvent, formatFleet, formatPlanet, formatTimestamp, formatTokens } from './Helpers';
+import { formatAllianceOnlyBlockie, formatEvent, formatFleet, formatPlanet, formatTimestamp, formatTokens } from './Helpers';
 import { Container, Row, Col } from 'react-bootstrap';
 import MapOwner from './MapOwner';
+import Blockies from 'react-blockies';
 
 const OWNER = gql`
   query GetOwner($id: String) {
@@ -69,6 +70,7 @@ function Owner() {
         <div >
           <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
             <h3><b>{owner.id.slice(0, 8)}...</b></h3>
+            <Blockies scale={15} seed={owner.id} className="border border-2 border-dark" />
             <h5>Statistics</h5>
             <table className='table table-info'>
               <tbody>

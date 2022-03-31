@@ -6,6 +6,7 @@ import {
 import { useParams } from 'react-router-dom';
 import MapAlliance from './MapAlliance';
 import { formatOwner, formatTokens } from './Helpers';
+import Blockies from 'react-blockies';
 
 const ALLIANCE = gql`
   query GetAlliance($id: String) {
@@ -73,9 +74,10 @@ function Alliance() {
       <h1>Alliance {id ? id.slice(0, 8) : "null"}...</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         {id ? <MapAlliance id={id} /> : null}
-        <div >
+        <div>
           <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
             <h3><b>{alliance.id.slice(0, 8)}...</b></h3>
+            <Blockies scale={15} seed={alliance.id} className="border border-2 border-dark" />
             <h5>Statistics</h5>
             <table className='table table-info'>
               <tbody>
