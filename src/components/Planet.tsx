@@ -67,7 +67,7 @@ function Planet() {
     <div>
       <h1>Planet {planet.x}, {planet.y}</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <MapSingle color="red" condition={(p) => p.id === planet.id} />
+        <MapSingle condition={(p) => p.id === planet.id ? 'red' : 'black'} />
         <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey' }}><div style={{ justifyContent: 'center', alignContent: 'center' }}>
           <h3><b>{planet.x}, {planet.y}</b></h3>
           <h5>Immutable statistics</h5>

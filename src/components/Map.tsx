@@ -61,12 +61,10 @@ const PLANETS = gql`
   }
 `
 
-const SCALING_FACTOR = 3;
 const BLOCK_STEP = 3000;
-
+export const SCALING_FACTOR = 2.25;
 export const addressToColor = (address: string) => "#" + address.slice(3, 9);
-
-const drawPlanet = (context: any, planet: any, space: any) => {
+export const drawPlanet = (context: any, planet: any, space: any) => {
   context.beginPath();
   context.arc((planet.x - (- space.minX)) * SCALING_FACTOR, (planet.y - (-space.minY)) * SCALING_FACTOR, SCALING_FACTOR * (planet.stakeDeposited / (10 ** 18) / 20), 0, 2 * Math.PI);
   context.stroke();
@@ -106,7 +104,7 @@ const drawAllianceOrOwner = (context: any, planets: any[], space: any) => {
   })
 };
 
-const PlanetCanvas = ({ planets, space, state, width, height, currentSpace }: { planets: any[], space: any, state: number, width: number, height: number, currentSpace: any }) => {
+export const PlanetCanvas = ({ planets, space, width, height, currentSpace, condition }: { planets: any[], space: any, width: number, height: number, currentSpace: any, condition: (p: any) => string }) => {
   const canvas = useRef<any>();
 
   useEffect(() => {
@@ -114,20 +112,15 @@ const PlanetCanvas = ({ planets, space, state, width, height, currentSpace }: { 
     context.fillStyle = 'white';
     context.fillRect(0, 0, 10000, 10000)
     context.fillStyle = 'black';
-    context.fillRect(0, ((0 - (- space.minY))) * SCALING_FACTOR, 10000, 1);
-    context.fillRect(((0 - (- space.minX))) * SCALING_FACTOR, 0, 1, 10000);
+    context.fillRect(0, parseInt(space.minY) * SCALING_FACTOR, 10000, 1);
+    context.fillRect(parseInt(space.minX) * SCALING_FACTOR, 0, 1, 10000);
     context.strokeStyle = 'grey';
 
-    if (planets) {
-      if (state === 0) {
-        drawOwner(context, planets, currentSpace);
-      } else if (state === 1) {
-        drawAlliance(context, planets, currentSpace);
-      } else {
-        drawAllianceOrOwner(context, planets, currentSpace);
-      }
-    }
-  }, [planets, state, currentSpace, space])
+    planets.forEach(p => {
+      context.fillStyle = condition(p);
+      drawPlanet(context, p, space)
+    })
+  }, [planets, currentSpace, space])
 
   return <canvas ref={canvas} width={width} height={height} style={{ border: "solid" }} />;
 }
@@ -147,7 +140,20 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace }: { currentBlock: num
       <button className='btn btn-primary m-1' onClick={() => setState(state === 2 ? 0 : state + 1)}>{state === 0 ? "Showing only owners" : state === 1 ? "Showing only alliances" : "Showing alliance or owner"}</button>
       <div>
         {!loading && data.space ?
-          <PlanetCanvas planets={data.planets.concat(data.planets2)} space={data.space} currentSpace={currentSpace} state={state} width={(currentSpace.minX - (-currentSpace.maxX)) * SCALING_FACTOR} height={(currentSpace.minY - (-currentSpace.maxY)) * SCALING_FACTOR} /> :
+          <PlanetCanvas
+            condition={
+              state === 0 ?
+                ((p: any) => p.owner ? addressToColor(p.owner.id) : 'black') :
+                state === 1 ?
+                  ((p: any) => (p.owner && p.owner.alliances.length > 0) ? addressToColor(p.owner.alliances[0].alliance.id) : 'white') :
+                  ((p: any) => p.owner ? addressToColor(p.owner && p.owner.alliances.length > 0 ? p.owner.alliances[0].alliance.id : p.owner.id) : 'black')
+            }
+            planets={data.planets.concat(data.planets2)}
+            space={data.space}
+            currentSpace={currentSpace}
+            width={(currentSpace.minX - (-currentSpace.maxX)) * SCALING_FACTOR}
+            height={(currentSpace.minY - (-currentSpace.maxY)) * SCALING_FACTOR}
+          /> :
           <canvas width={(currentSpace.minX - (-currentSpace.maxX)) * SCALING_FACTOR} height={(currentSpace.minY - (-currentSpace.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />}
       </div>
       <div>

@@ -74,7 +74,7 @@ function Alliance() {
     <div>
       <h1>Alliance {id ? id.slice(0, 8) : "null"}...</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        {id ? <MapSingle condition={(p) => p.owner && p.owner.alliances.length > 0 && p.owner.alliances.some((a: any) => a.alliance.id === id)} color={addressToColor(id)} /> : null}
+        {id ? <MapSingle condition={(p) => (p.owner && p.owner.alliances.length > 0 && p.owner.alliances.some((a: any) => a.alliance.id === id) ? addressToColor(alliance.id) : 'black')} /> : null}
         <div>
           <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
             <h3><b>{alliance.id.slice(0, 8)}...</b></h3>
