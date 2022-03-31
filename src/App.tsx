@@ -25,7 +25,10 @@ function App() {
       <div className="App">
         <Navbar bg="light" expand="lg">
           <Container>
-            <Navbar.Brand> <Link to="/">CONQUEST.ETH STATS</Link></Navbar.Brand>
+            <Navbar.Brand>
+              <Link to="/">CONQUEST.ETH STATS</Link>
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
                 <Nav.Link><Link to="/owners">Owners</Link></Nav.Link>
