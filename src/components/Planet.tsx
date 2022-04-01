@@ -6,7 +6,7 @@ import {
 import { useParams } from 'react-router-dom';
 import { formatAllianceOnlyBlockie, formatEvent, formatOwner, formatTimestamp } from './Helpers';
 import * as ethers from 'ethers';
-import MapSingle from './MapSingle';
+import { MapBlack } from './Map';
 const planetsABI = require("./IOuterSpacePlanets.json");
 
 const PLANET = gql`
@@ -67,9 +67,18 @@ function Planet() {
     <div>
       <h1>Planet {planet.x}, {planet.y}</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <MapSingle condition={(p) => p.id === planet.id ? 'red' : 'black'} />
+        <MapBlack condition={(p) => p.id === planet.id ? 'red' : 'black'} />
         <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey' }}><div style={{ justifyContent: 'center', alignContent: 'center' }}>
           <h3><b>{planet.x}, {planet.y}</b></h3>
+          <h5>Location</h5>
+          <table className='table table-info'>
+            <tbody>
+              <tr>
+                <td><b>Sector</b></td>
+                <td>S({Math.floor((parseInt(planet.x) + 7) / 15)}, {Math.floor((parseInt(planet.y) + 7) / 15)})</td>
+              </tr>
+            </tbody>
+          </table>
           <h5>Immutable statistics</h5>
           {state ?
             <table className='table table-info'>

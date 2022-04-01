@@ -125,8 +125,7 @@ export const PlanetCanvas = ({ planets, space, width, height, currentSpace, cond
   return <canvas ref={canvas} width={width} height={height} style={{ border: "solid" }} />;
 }
 
-const PlanetsQueryWrapper = ({ currentBlock, currentSpace }: { currentBlock: number, currentSpace: any }) => {
-  const [state, setState] = useState(0);
+const PlanetsQueryWrapper = ({ currentBlock, currentSpace, condition }: { currentBlock: number, currentSpace: any, condition: (p: any) => string }) => {
   const [block, setBlock] = useState(currentBlock);
 
   const { loading, error, data } = useQuery(PLANETS, {
@@ -137,17 +136,10 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace }: { currentBlock: num
 
   return (
     <div>
-      <button className='btn btn-primary m-1' onClick={() => setState(state === 2 ? 0 : state + 1)}>{state === 0 ? "Showing only owners" : state === 1 ? "Showing only alliances" : "Showing alliance or owner"}</button>
       <div>
         {!loading && data.space ?
           <PlanetCanvas
-            condition={
-              state === 0 ?
-                ((p: any) => p.owner ? addressToColor(p.owner.id) : 'black') :
-                state === 1 ?
-                  ((p: any) => (p.owner && p.owner.alliances.length > 0) ? addressToColor(p.owner.alliances[0].alliance.id) : 'white') :
-                  ((p: any) => p.owner ? addressToColor(p.owner && p.owner.alliances.length > 0 ? p.owner.alliances[0].alliance.id : p.owner.id) : 'black')
-            }
+            condition={condition}
             planets={data.planets.concat(data.planets2)}
             space={data.space}
             currentSpace={currentSpace}
@@ -164,7 +156,7 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace }: { currentBlock: num
   );
 }
 
-function Map() {
+export const MapBlack = ({ condition }: { condition: (p: any) => string }) => {
   const { loading, error, data } = useQuery(BLOCK);
 
   if (loading) return <p>Loading...</p>;
@@ -172,7 +164,25 @@ function Map() {
 
   return (
     <div>
-      <PlanetsQueryWrapper currentBlock={data._meta.block.number} currentSpace={data.space} />
+      <PlanetsQueryWrapper currentBlock={data._meta.block.number} currentSpace={data.space} condition={condition} />
+    </div>
+  );
+}
+
+function Map() {
+  const [state, setState] = useState(0);
+
+  return (
+    <div>
+      <button className='btn btn-primary m-1' onClick={() => setState(state === 2 ? 0 : state + 1)}>{state === 0 ? "Showing only owners" : state === 1 ? "Showing only alliances" : "Showing alliance or owner"}</button>
+      <MapBlack
+        condition={
+          state === 0 ?
+            ((p: any) => p.owner ? addressToColor(p.owner.id) : 'black') :
+            state === 1 ?
+              ((p: any) => (p.owner && p.owner.alliances.length > 0) ? addressToColor(p.owner.alliances[0].alliance.id) : 'white') :
+              ((p: any) => p.owner ? addressToColor(p.owner && p.owner.alliances.length > 0 ? p.owner.alliances[0].alliance.id : p.owner.id) : 'black')
+        } />
     </div>
   );
 }

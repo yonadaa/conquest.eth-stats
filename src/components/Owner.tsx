@@ -7,8 +7,7 @@ import { useParams } from 'react-router-dom';
 import { formatAllianceOnlyBlockie, formatEvent, formatFleet, formatPlanet, formatTimestamp, formatTokens } from './Helpers';
 import { Container, Row, Col } from 'react-bootstrap';
 import Blockies from 'react-blockies';
-import MapSingle from './MapSingle';
-import { addressToColor } from './Map';
+import { addressToColor, MapBlack } from './Map';
 
 const OWNER = gql`
   query GetOwner($id: String) {
@@ -67,7 +66,7 @@ function Owner() {
     <div>
       <h1>Owner {owner.id.slice(0, 4)}...{owner.id.slice(-4)}</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <MapSingle condition={(p) => (p.owner && p.owner.id === owner.id) ? addressToColor(owner.id) : 'black'} />
+        <MapBlack condition={(p) => (p.owner && p.owner.id === owner.id) ? addressToColor(owner.id) : 'black'} />
         <div >
           <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
             <h3><b>{owner.id.slice(0, 4)}...{owner.id.slice(-4)}</b></h3>
@@ -89,7 +88,7 @@ function Owner() {
                 </tr>
                 <tr>
                   <td><b>Contact details</b></td>
-                  <td><a href={` https://account-service-beta.rim.workers.dev/get/${data.owner.id}`}>Click here</a></td>
+                  <td><a href={`https://account-service-beta.rim.workers.dev/get/${data.owner.id}`}>Click here</a></td>
                 </tr>
               </tbody>
             </table>
