@@ -70,9 +70,13 @@ function Planet() {
         <MapBlack condition={(p) => p.id === planet.id ? 'red' : 'black'} />
         <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey' }}><div style={{ justifyContent: 'center', alignContent: 'center' }}>
           <h3><b>{planet.x}, {planet.y}</b></h3>
-          <h5>Location</h5>
+          <h5>Position</h5>
           <table className='table table-info'>
             <tbody>
+              {/* <tr>
+                <td><b>Exact coordinates</b></td>
+                {state ? <td>{Math.round(100 * parseInt(planet.x) + state.stats.subX / 3) / 100}, {Math.round(100 * (parseInt(planet.y) + state.stats.subY / 3)) / 100}</td> : "Install wallet!"}
+              </tr> */}
               <tr>
                 <td><b>Sector</b></td>
                 <td>S({Math.floor((parseInt(planet.x) + 7) / 15)}, {Math.floor((parseInt(planet.y) + 7) / 15)})</td>

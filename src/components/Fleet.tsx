@@ -5,6 +5,7 @@ import {
 } from "@apollo/client";
 import { useParams } from 'react-router-dom';
 import { formatTimestamp, formatPlanet, formatOwner, formatEvent, eventToText } from './Helpers';
+import { MapBlack } from './Map';
 
 const FLEET = gql`
   query GetFleet($id: String) {
@@ -97,9 +98,38 @@ function Fleet() {
 
   return (
     <div>
-      <h1>Fleet overview</h1>
-      <p>ID: {fleet.id}</p>
-      <p>Launch time: {formatTimestamp(fleet.launchTime)} | owner: {formatOwner(fleet.owner)} | from: {formatPlanet(fleet.from)} | to: {fleet.to ? formatPlanet(fleet.to) : "?"}</p>
+      <h1><b>F</b>{fleet.id.slice(0, 9)}</h1>
+      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+        <MapBlack condition={(p) => (p.id === fleet.from.id) ? 'red' : 'black'} />
+        <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
+          <h3><b><b>F</b>{fleet.id.slice(0, 9)}</b></h3>
+          <h5>Overview</h5>
+          <table className='table table-info'>
+            <tbody>
+              <tr>
+                <td><b>Owner</b></td>
+                <td>{formatOwner(fleet.owner)}</td>
+              </tr>
+              <tr>
+                <td><b>Quantity</b></td>
+                <td>{fleet.quantity}</td>
+              </tr>
+              <tr>
+                <td><b>Launch Time</b></td>
+                <td>{formatTimestamp(fleet.launchTime)}</td>
+              </tr>
+              <tr>
+                <td><b>From</b></td>
+                <td>{formatPlanet(fleet.from)}</td>
+              </tr>
+              <tr>
+                <td><b>To</b></td>
+                <td>{fleet.to ? formatPlanet(fleet.to) : "?"}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <h3>Events</h3>
       <table className='table table-success'>
         <thead>

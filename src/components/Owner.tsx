@@ -67,7 +67,7 @@ function Owner() {
       <h1>Owner {owner.id.slice(0, 4)}...{owner.id.slice(-4)}</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         <MapBlack condition={(p) => (p.owner && p.owner.id === owner.id) ? addressToColor(owner.id) : 'black'} />
-        <div >
+        <div>
           <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
             <h3><b>{owner.id.slice(0, 4)}...{owner.id.slice(-4)}</b></h3>
             <Blockies scale={15} seed={owner.id} className="border border-2 border-dark" />

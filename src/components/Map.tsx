@@ -93,7 +93,7 @@ export const PlanetCanvas = ({ planets, space, width, height, currentSpace, cond
       context.fillStyle = condition(p);
       drawPlanet(context, p, currentSpace)
     })
-  }, [planets, currentSpace, space])
+  }, [planets, currentSpace, space, condition])
 
   return <canvas ref={canvas} width={width} height={height} style={{ border: "solid" }} />;
 }

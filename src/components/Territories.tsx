@@ -28,6 +28,21 @@ const PLANETS = gql`
         }
       }
     }
+    planets2: planets(first: 1000, skip: 1000) {
+      id
+      x
+      y
+      stakeDeposited
+      reward
+      owner {
+        id
+        alliances {
+          alliance {
+            id
+          }
+        }
+      }
+    }
   }
 `
 
@@ -100,7 +115,7 @@ const PlanetsQueryWrapper = () => {
   return (
     <div>
       {data.space ?
-        <NearestNeighbourCanvas planets={data.planets} space={data.space} /> :
+        <NearestNeighbourCanvas planets={data.planets.concat(data.planets2)} space={data.space} /> :
         <canvas width={(data.space.minX - (-data.space.maxX)) * SCALING_FACTOR} height={(data.space.minY - (-data.space.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />}
     </div >
   );
