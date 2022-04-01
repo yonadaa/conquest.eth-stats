@@ -77,33 +77,6 @@ export const drawPlanet = (context: any, planet: any, space: any) => {
   }
 }
 
-const drawOwner = (context: any, planets: any[], space: any) => {
-  planets.forEach(p => {
-    if (p.owner) {
-      context.fillStyle = addressToColor(p.owner.id)
-      drawPlanet(context, p, space)
-    }
-  })
-};
-
-const drawAlliance = (context: any, planets: any[], space: any) => {
-  planets.forEach(p => {
-    if (p.owner && p.owner.alliances.length > 0) {
-      context.fillStyle = addressToColor(p.owner.alliances[0].alliance.id)
-      drawPlanet(context, p, space)
-    }
-  })
-};
-
-const drawAllianceOrOwner = (context: any, planets: any[], space: any) => {
-  planets.forEach(p => {
-    if (p.owner) {
-      context.fillStyle = addressToColor(p.owner && p.owner.alliances.length > 0 ? p.owner.alliances[0].alliance.id : p.owner.id);
-      drawPlanet(context, p, space)
-    }
-  })
-};
-
 export const PlanetCanvas = ({ planets, space, width, height, currentSpace, condition }: { planets: any[], space: any, width: number, height: number, currentSpace: any, condition: (p: any) => string }) => {
   const canvas = useRef<any>();
 
@@ -112,13 +85,13 @@ export const PlanetCanvas = ({ planets, space, width, height, currentSpace, cond
     context.fillStyle = 'white';
     context.fillRect(0, 0, 10000, 10000)
     context.fillStyle = 'black';
-    context.fillRect(0, parseInt(space.minY) * SCALING_FACTOR, 10000, 1);
-    context.fillRect(parseInt(space.minX) * SCALING_FACTOR, 0, 1, 10000);
+    context.fillRect(0, parseInt(currentSpace.minY) * SCALING_FACTOR, 10000, 1);
+    context.fillRect(parseInt(currentSpace.minX) * SCALING_FACTOR, 0, 1, 10000);
     context.strokeStyle = 'grey';
 
     planets.forEach(p => {
       context.fillStyle = condition(p);
-      drawPlanet(context, p, space)
+      drawPlanet(context, p, currentSpace)
     })
   }, [planets, currentSpace, space])
 
