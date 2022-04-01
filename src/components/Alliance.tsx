@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   useQuery,
   gql
@@ -47,8 +47,12 @@ const OwnersTable = ({ owners }: { owners: any[] }) => {
   </table>;
 }
 
+const allianceColoring = (alliance: any) => (p: any) => (p.owner && p.owner.alliances.length > 0 && p.owner.alliances.some((a: any) => a.alliance.id === alliance.id) ? addressToColor(alliance.id) : 'black');
+const ownerColoring = (alliance: any) => (p: any) => (p.owner && p.owner.alliances.length > 0 && p.owner.alliances.some((a: any) => a.alliance.id === alliance.id) ? addressToColor(p.owner.id) : 'black');
+
 function Alliance() {
   let { id } = useParams();
+  const [show, setShow] = useState(true);
 
   const { loading, error, data } = useQuery(ALLIANCE, {
     variables: { id },
@@ -69,11 +73,16 @@ function Alliance() {
 
   const alliance = data.alliance;
 
+  const condition = show ? allianceColoring(alliance) : ownerColoring(alliance);
+
   return (
     <div>
       <h1>Alliance {id ? id.slice(0, 8) : "null"}...</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        {id ? <MapBlack condition={(p) => (p.owner && p.owner.alliances.length > 0 && p.owner.alliances.some((a: any) => a.alliance.id === id) ? addressToColor(alliance.id) : 'black')} /> : null}
+        <div>
+          <button className='btn btn-primary' onClick={() => setShow(!show)}>{show ? "Showing alliance" : "Showing individual owners"}</button>
+          {id ? <MapBlack condition={condition} /> : null}
+        </div>
         <div>
           <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
             <h3><b>{alliance.id.slice(0, 8)}...</b></h3>
