@@ -77,16 +77,15 @@ const NearestNeighbourCanvas = ({ planets, space }: { planets: any[], space: any
     if (planets) {
       for (let x = -space.minX; x < space.maxX; x += STEP) {
         for (let y = -space.minY; y < space.maxY; y += STEP) {
-          const ps = planets.slice();
-          ps.sort((p1, p2) => distance({ x, y }, p1) - distance({ x, y }, p2));
+          const closestPlanet = planets.reduce((prev: any, curr: any) => distance({ x, y }, prev) < distance({ x, y }, curr) ? prev : curr);
 
-          if (distance({ x, y }, ps[0]) < MAX_DISTANCE) {
-            if (!ps[0].owner) {
+          if (distance({ x, y }, closestPlanet) < MAX_DISTANCE) {
+            if (!closestPlanet.owner) {
               context.fillStyle = 'black';
-            } else if (ps[0].owner.alliances.length > 0) {
-              context.fillStyle = addressToColor(ps[0].owner.alliances[0].alliance.id);
+            } else if (closestPlanet.owner.alliances.length > 0) {
+              context.fillStyle = addressToColor(closestPlanet.owner.alliances[0].alliance.id);
             } else {
-              context.fillStyle = addressToColor(ps[0].owner.id);
+              context.fillStyle = addressToColor(closestPlanet.owner.id);
             }
             context.beginPath();
             context.arc((x - (- space.minX)) * SCALING_FACTOR, (y - (-space.minY)) * SCALING_FACTOR, SCALING_FACTOR * STEP, 0, 2 * Math.PI);
