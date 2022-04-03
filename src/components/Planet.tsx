@@ -71,7 +71,7 @@ function Planet() {
         <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey' }}><div style={{ justifyContent: 'center', alignContent: 'center' }}>
           <h3><b>{planet.x}, {planet.y}</b></h3>
           <h5>Position</h5>
-          <table className='table table-info'>
+          <table className='table table-info text-start'>
             <tbody>
               {/* <tr>
                 <td><b>Exact coordinates</b></td>

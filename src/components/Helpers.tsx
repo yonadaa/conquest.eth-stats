@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Blockies from 'react-blockies';
 
-export const formatTokens = (value: number) => `${value / (10 ** 18)} ▶️`;
+export const formatTokens = (value: number) => <span>{value / (10 ** 18)}<img width="20" src="/play.svg" /></span>;
 export const formatTimestamp = (timestamp: number) => new Date(timestamp * 1000).toUTCString();
 
 export const formatOwner = (owner: any) => <Link to={`/owners/${owner.id}`}><Blockies seed={owner.id} />{owner.id.slice(0, 4)}...{owner.id.slice(-4)}</Link>;

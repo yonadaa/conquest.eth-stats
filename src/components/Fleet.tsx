@@ -104,7 +104,7 @@ function Fleet() {
         <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
           <h3><b><b>F</b>{fleet.id.slice(0, 9)}</b></h3>
           <h5>Overview</h5>
-          <table className='table table-info'>
+          <table className='table table-info text-start'>
             <tbody>
               <tr>
                 <td><b>Owner</b></td>

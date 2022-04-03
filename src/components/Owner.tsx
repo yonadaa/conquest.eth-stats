@@ -73,7 +73,7 @@ function Owner() {
             <h3><b>{owner.id.slice(0, 4)}...{owner.id.slice(-4)}</b></h3>
             <Blockies scale={15} seed={owner.id} className="border border-2 border-dark" />
             <h5>Overview</h5>
-            <table className='table table-info'>
+            <table className='table table-info text-start'>
               <tbody>
                 <tr>
                   <td><b>Alliances</b></td>
