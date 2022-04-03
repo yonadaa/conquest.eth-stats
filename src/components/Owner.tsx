@@ -15,6 +15,7 @@ const OWNER = gql`
       id
       currentStake
       tokenBalance
+      tokenToWithdraw
       planets(orderBy:lastUpdated orderDirection:desc) {
         id
         x
@@ -85,6 +86,10 @@ function Owner() {
                 <tr>
                   <td><b>Balance</b></td>
                   <td>{formatTokens(parseInt(owner.tokenBalance))}</td>
+                </tr>
+                <tr>
+                  <td><b>Tokens to withdraw</b></td>
+                  <td>{formatTokens(parseInt(owner.tokenToWithdraw))}</td>
                 </tr>
                 <tr>
                   <td><b>Contact details</b></td>

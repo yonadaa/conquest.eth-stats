@@ -95,6 +95,14 @@ function Alliance() {
                   <td>{alliance.members.length}</td>
                 </tr>
                 <tr>
+                  <td><b>Total stake</b></td>
+                  <td>{alliance.members.reduce((partialSum: any, a: any) => partialSum + a.owner.currentStake / 10 ** 18, 0)}</td>
+                </tr>
+                <tr>
+                  <td><b>Total balance</b></td>
+                  <td>{alliance.members.reduce((partialSum: any, a: any) => partialSum + a.owner.tokenBalance / 10 ** 18, 0)}</td>
+                </tr>
+                <tr>
                   <td><b>Admin page</b></td>
                   <td><a href={`https://basic-alliances-beta.conquest.etherplay.io/alliances/#${id}`}>Click here</a></td>
                 </tr>
