@@ -63,6 +63,7 @@ function Planet() {
 
   const planet = data.planet;
 
+  console.log(state)
   return (
     <div>
       <h1>Planet {planet.x}, {planet.y}</h1>
@@ -90,6 +91,10 @@ function Planet() {
                 <tr>
                   <td><b>Stake</b></td>
                   <td>{state.stats.stake}</td>
+                </tr>
+                <tr>
+                  <td><b>Natives</b></td>
+                  <td>{state.stats.natives}</td>
                 </tr>
                 <tr>
                   <td><b>Production</b></td>
