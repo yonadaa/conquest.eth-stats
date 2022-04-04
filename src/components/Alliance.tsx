@@ -106,6 +106,10 @@ function Alliance() {
                   <td><b>Admin page</b></td>
                   <td><a href={`https://basic-alliances-beta.conquest.etherplay.io/alliances/#${id}`}>Click here</a></td>
                 </tr>
+                <tr>
+                  <td><b>Blockscout</b></td>
+                  <td><a href={`https://blockscout.com/xdai/mainnet/address/${id}`}>Click here</a></td>
+                </tr>
               </tbody>
             </table>
           </div>

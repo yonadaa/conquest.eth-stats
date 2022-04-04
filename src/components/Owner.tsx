@@ -95,6 +95,10 @@ function Owner() {
                   <td><b>Contact details</b></td>
                   <td><a href={`https://account-service-beta.rim.workers.dev/get/${data.owner.id}`}>Click here</a></td>
                 </tr>
+                <tr>
+                  <td><b>Blockscout</b></td>
+                  <td><a href={`https://blockscout.com/xdai/mainnet/address/${data.owner.id}`}>Click here</a></td>
+                </tr>
               </tbody>
             </table>
           </div>
