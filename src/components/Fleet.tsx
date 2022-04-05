@@ -5,7 +5,7 @@ import {
 } from "@apollo/client";
 import { useParams } from 'react-router-dom';
 import { formatTimestamp, formatPlanet, formatOwner, formatEvent, eventToText } from './Helpers';
-import { MapBlack } from './Map';
+import { MapBlank } from './Map';
 
 const FLEET = gql`
   query GetFleet($id: String) {
@@ -100,7 +100,7 @@ function Fleet() {
     <div>
       <h1><b>F</b>{fleet.id.slice(0, 9)}</h1>
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <MapBlack condition={(p) => (p.id === fleet.from.id) ? 'red' : 'black'} />
+        <MapBlank condition={(p) => (p.id === fleet.from.id) ? 'red' : 'black'} />
         <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
           <h3><b><b>F</b>{fleet.id.slice(0, 9)}</b></h3>
           <h5>Overview</h5>

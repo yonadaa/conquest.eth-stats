@@ -129,7 +129,7 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace, condition }: { curren
   );
 }
 
-export const MapBlack = ({ condition }: { condition: (p: any) => string }) => {
+export const MapBlank = ({ condition }: { condition: (p: any) => string }) => {
   const { loading, error, data } = useQuery(BLOCK);
 
   if (loading) return <p>Loading...</p>;
@@ -148,7 +148,7 @@ function Map() {
   return (
     <div>
       <button className='btn btn-primary m-1' onClick={() => setState(state === 2 ? 0 : state + 1)}>{state === 0 ? "Showing only owners" : state === 1 ? "Showing only alliances" : "Showing alliance or owner"}</button>
-      <MapBlack
+      <MapBlank
         condition={
           state === 0 ?
             ((p: any) => p.owner ? addressToColor(p.owner.id) : 'black') :

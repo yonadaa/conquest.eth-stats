@@ -6,7 +6,7 @@ import {
 import { useParams } from 'react-router-dom';
 import { formatOwner, formatTokens } from './Helpers';
 import Blockies from 'react-blockies';
-import { addressToColor, MapBlack } from './Map';
+import { addressToColor, MapBlank } from './Map';
 
 const ALLIANCE = gql`
   query GetAlliance($id: String) {
@@ -81,7 +81,7 @@ function Alliance() {
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         <div>
           <button className='btn btn-primary' onClick={() => setShow(!show)}>{show ? "Showing alliance" : "Showing individual owners"}</button>
-          {id ? <MapBlack condition={condition} /> : null}
+          {id ? <MapBlank condition={condition} /> : null}
         </div>
         <div>
           <div style={{ border: 'solid', borderWidth: 1, borderColor: 'grey', justifyContent: 'center', alignContent: 'center' }}>
