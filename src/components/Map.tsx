@@ -61,8 +61,8 @@ const PLANETS = gql`
   }
 `
 
-const FIRST_BLOCK = 21259602;
-const BLOCK_STEP = 25000;
+export const FIRST_BLOCK = 21259602;
+export const BLOCK_STEP = 25000;
 const SCALING_FACTOR = 2.25;
 const drawPlanet = (context: any, planet: any, space: any) => {
   context.beginPath();

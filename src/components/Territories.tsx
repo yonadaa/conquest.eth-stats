@@ -1,9 +1,25 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   useQuery,
   gql
 } from "@apollo/client";
-import { addressToColor } from './Map';
+import { addressToColor, BLOCK_STEP, FIRST_BLOCK } from './Map';
+
+const BLOCK = gql`
+  query {
+    _meta{
+      block {
+        number
+      }
+    }
+    space(id:"Space") {
+      minX
+      maxX
+      minY
+      maxY
+    }
+  }
+`
 
 const PLANETS = gql`
   query GetPlanets($block: Int) {
@@ -13,7 +29,7 @@ const PLANETS = gql`
       minY
       maxY
     }
-    planets(first: 1000) {
+    planets(first: 1000, block:{number: $block}) {
       id
       x
       y
@@ -28,7 +44,7 @@ const PLANETS = gql`
         }
       }
     }
-    planets2: planets(first: 1000, skip: 1000) {
+    planets2: planets(first: 1000, skip:1000, block:{number: $block}) {
       id
       x
       y
@@ -105,8 +121,14 @@ const NearestNeighbourCanvas = ({ planets, space }: { planets: any[], space: any
   return <canvas ref={canvas} width={(space.minX - (-space.maxX)) * SCALING_FACTOR} height={(space.minY - (-space.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />;
 }
 
-const PlanetsQueryWrapper = () => {
-  const { loading, error, data } = useQuery(PLANETS);
+const PlanetsQueryWrapper = ({ currentBlock }: { currentBlock: number }) => {
+  const [block, setBlock] = useState(currentBlock);
+
+  const { loading, error, data } = useQuery(PLANETS,
+    {
+      variables: { block },
+      fetchPolicy: 'network-only'
+    });
 
   if (loading) return <p>Loading..</p>;
   if (error) return <p>Error: {error}</p>;
@@ -115,16 +137,26 @@ const PlanetsQueryWrapper = () => {
     <div>
       {data.space ?
         <NearestNeighbourCanvas planets={data.planets.concat(data.planets2)} space={data.space} /> :
-        <canvas width={(data.space.minX - (-data.space.maxX)) * SCALING_FACTOR} height={(data.space.minY - (-data.space.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />}
+        <canvas width={(data.space.minX - (-data.space.maxX)) * SCALING_FACTOR} height={(data.space.minY - (-data.space.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />
+      }
+      <div>
+        <label htmlFor="customRange1" className="form-label">View at block: <a href={`https://blockscout.com/xdai/mainnet/block/${block}`}>{block}</a></label>
+        <input type="range" className="form-range" id="customRange1" min={FIRST_BLOCK} max={currentBlock} step={BLOCK_STEP} value={block} onChange={(e) => setBlock(parseInt(e.target.value))}></input>
+      </div>
     </div >
   );
 }
 
 function Territories() {
+  const { loading, error, data } = useQuery(BLOCK);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h2>Faction Territories</h2>
-      <PlanetsQueryWrapper />
+      <PlanetsQueryWrapper currentBlock={data._meta.block.number} />
     </div>
   );
 }
