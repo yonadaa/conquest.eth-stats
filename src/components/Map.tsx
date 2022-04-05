@@ -61,10 +61,10 @@ const PLANETS = gql`
   }
 `
 
+const FIRST_BLOCK = 21259602;
 const BLOCK_STEP = 25000;
-export const SCALING_FACTOR = 2.25;
-export const addressToColor = (address: string) => "#" + address.slice(3, 9);
-export const drawPlanet = (context: any, planet: any, space: any) => {
+const SCALING_FACTOR = 2.25;
+const drawPlanet = (context: any, planet: any, space: any) => {
   context.beginPath();
   context.arc((planet.x - (- space.minX)) * SCALING_FACTOR, (planet.y - (-space.minY)) * SCALING_FACTOR, SCALING_FACTOR * (planet.stakeDeposited / (10 ** 18) / 20), 0, 2 * Math.PI);
   context.stroke();
@@ -76,6 +76,8 @@ export const drawPlanet = (context: any, planet: any, space: any) => {
     context.strokeStyle = 'grey';
   }
 }
+
+export const addressToColor = (address: string) => "#" + address.slice(3, 9);
 
 export const PlanetCanvas = ({ planets, space, width, height, currentSpace, condition }: { planets: any[], space: any, width: number, height: number, currentSpace: any, condition: (p: any) => string }) => {
   const canvas = useRef<any>();
@@ -124,7 +126,7 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace, condition }: { curren
       </div>
       <div>
         <label htmlFor="customRange1" className="form-label">View at block: {block}</label>
-        <input type="range" className="form-range" id="customRange1" min={21259602} max={currentBlock} step={BLOCK_STEP} value={block} onChange={(e) => setBlock(parseInt(e.target.value))}></input>
+        <input type="range" className="form-range" id="customRange1" min={FIRST_BLOCK} max={currentBlock} step={BLOCK_STEP} value={block} onChange={(e) => setBlock(parseInt(e.target.value))}></input>
       </div>
     </div >
   );
