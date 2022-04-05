@@ -103,6 +103,7 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace, condition }: { curren
 
   const { loading, error, data } = useQuery(PLANETS, {
     variables: { block },
+    fetchPolicy: 'network-only'
   });
 
   if (error) return <p>Error: {error}</p>;
