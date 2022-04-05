@@ -61,7 +61,7 @@ const PLANETS = gql`
   }
 `
 
-const BLOCK_STEP = 10000;
+const BLOCK_STEP = 100000;
 export const SCALING_FACTOR = 2.25;
 export const addressToColor = (address: string) => "#" + address.slice(3, 9);
 export const drawPlanet = (context: any, planet: any, space: any) => {
@@ -123,7 +123,7 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace, condition }: { curren
       </div>
       <div>
         <label htmlFor="customRange1" className="form-label">View at block: {block}</label>
-        <input type="range" className="form-range" id="customRange1" min={currentBlock - 500000} max={currentBlock} step={BLOCK_STEP} value={block} onChange={(e) => setBlock(parseInt(e.target.value))}></input>
+        <input type="range" className="form-range" id="customRange1" min={currentBlock - 1000000} max={currentBlock} step={BLOCK_STEP} value={block} onChange={(e) => setBlock(parseInt(e.target.value))}></input>
       </div>
     </div >
   );
