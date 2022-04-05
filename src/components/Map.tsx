@@ -125,7 +125,7 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace, condition }: { curren
           <canvas width={(currentSpace.minX - (-currentSpace.maxX)) * SCALING_FACTOR} height={(currentSpace.minY - (-currentSpace.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />}
       </div>
       <div>
-        <label htmlFor="customRange1" className="form-label">View at block: {block}</label>
+        <label htmlFor="customRange1" className="form-label">View at block: <a href={`https://blockscout.com/xdai/mainnet/block/${block}`}>{block}</a></label>
         <input type="range" className="form-range" id="customRange1" min={FIRST_BLOCK} max={currentBlock} step={BLOCK_STEP} value={block} onChange={(e) => setBlock(parseInt(e.target.value))}></input>
       </div>
     </div >
