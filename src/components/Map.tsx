@@ -79,7 +79,7 @@ const drawPlanet = (context: any, planet: any, space: any) => {
 
 export const addressToColor = (address: string) => "#" + address.slice(3, 9);
 
-export const PlanetCanvas = ({ planets, space, width, height, currentSpace, condition }: { planets: any[], space: any, width: number, height: number, currentSpace: any, condition: (p: any) => string }) => {
+export const PlanetCanvas = ({ planets, width, height, currentSpace, condition }: { planets: any[], width: number, height: number, currentSpace: any, condition: (p: any) => string }) => {
   const canvas = useRef<any>();
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export const PlanetCanvas = ({ planets, space, width, height, currentSpace, cond
       context.fillStyle = condition(p);
       drawPlanet(context, p, currentSpace)
     })
-  }, [planets, currentSpace, space, condition])
+  }, [planets, currentSpace, condition])
 
   return <canvas ref={canvas} width={width} height={height} style={{ border: "solid" }} />;
 }
@@ -117,7 +117,6 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace, condition }: { curren
           <PlanetCanvas
             condition={condition}
             planets={data.planets.concat(data.planets2)}
-            space={data.space}
             currentSpace={currentSpace}
             width={(currentSpace.minX - (-currentSpace.maxX)) * SCALING_FACTOR}
             height={(currentSpace.minY - (-currentSpace.maxY)) * SCALING_FACTOR}

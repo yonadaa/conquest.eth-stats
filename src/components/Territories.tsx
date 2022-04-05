@@ -23,7 +23,7 @@ const BLOCK = gql`
 
 const PLANETS = gql`
   query GetPlanets($block: Int) {
-    space(id:"Space") {
+    space(id:"Space", block:{number: $block}) {
       minX
       maxX
       minY
@@ -83,7 +83,7 @@ const drawPlanet = (context: any, planet: any, space: any) => {
   }
 }
 
-const NearestNeighbourCanvas = ({ planets, space }: { planets: any[], space: any }) => {
+const NearestNeighbourCanvas = ({ planets, currentSpace }: { planets: any[], currentSpace: any }) => {
   const canvas = useRef<any>();
 
   useEffect(() => {
@@ -91,8 +91,8 @@ const NearestNeighbourCanvas = ({ planets, space }: { planets: any[], space: any
     context.fillStyle = 'black';
     context.fillRect(0, 0, 10000, 10000)
     if (planets) {
-      for (let x = -space.minX; x < space.maxX; x += STEP) {
-        for (let y = -space.minY; y < space.maxY; y += STEP) {
+      for (let x = -currentSpace.minX; x < currentSpace.maxX; x += STEP) {
+        for (let y = -currentSpace.minY; y < currentSpace.maxY; y += STEP) {
           const closestPlanet = planets.reduce((prev: any, curr: any) => distance({ x, y }, prev) < distance({ x, y }, curr) ? prev : curr);
 
           if (distance({ x, y }, closestPlanet) < MAX_DISTANCE) {
@@ -104,24 +104,24 @@ const NearestNeighbourCanvas = ({ planets, space }: { planets: any[], space: any
               context.fillStyle = addressToColor(closestPlanet.owner.id);
             }
             context.beginPath();
-            context.arc((x - (- space.minX)) * SCALING_FACTOR, (y - (-space.minY)) * SCALING_FACTOR, SCALING_FACTOR * STEP, 0, 2 * Math.PI);
+            context.arc((x - (- currentSpace.minX)) * SCALING_FACTOR, (y - (-currentSpace.minY)) * SCALING_FACTOR, SCALING_FACTOR * STEP, 0, 2 * Math.PI);
             context.fill();
           }
         }
       }
       context.fillStyle = 'black';
-      context.fillRect(0, ((0 - (- space.minY))) * SCALING_FACTOR, 10000, 0.25);
-      context.fillRect(((0 - (- space.minX))) * SCALING_FACTOR, 0, 0.25, 10000);
+      context.fillRect(0, ((0 - (- currentSpace.minY))) * SCALING_FACTOR, 10000, 0.25);
+      context.fillRect(((0 - (- currentSpace.minX))) * SCALING_FACTOR, 0, 0.25, 10000);
       planets.forEach(p => {
-        drawPlanet(context, p, space)
+        drawPlanet(context, p, currentSpace)
       })
     }
-  }, [planets, space])
+  }, [planets, currentSpace])
 
-  return <canvas ref={canvas} width={(space.minX - (-space.maxX)) * SCALING_FACTOR} height={(space.minY - (-space.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />;
+  return <canvas ref={canvas} width={(currentSpace.minX - (-currentSpace.maxX)) * SCALING_FACTOR} height={(currentSpace.minY - (-currentSpace.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />;
 }
 
-const PlanetsQueryWrapper = ({ currentBlock }: { currentBlock: number }) => {
+const PlanetsQueryWrapper = ({ currentBlock, currentSpace }: { currentBlock: number, currentSpace: any }) => {
   const [block, setBlock] = useState(currentBlock);
 
   const { loading, error, data } = useQuery(PLANETS,
@@ -136,7 +136,8 @@ const PlanetsQueryWrapper = ({ currentBlock }: { currentBlock: number }) => {
   return (
     <div>
       {data.space ?
-        <NearestNeighbourCanvas planets={data.planets.concat(data.planets2)} space={data.space} /> :
+        <NearestNeighbourCanvas planets={data.planets.concat(data.planets2)}
+          currentSpace={currentSpace} /> :
         <canvas width={(data.space.minX - (-data.space.maxX)) * SCALING_FACTOR} height={(data.space.minY - (-data.space.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />
       }
       <div>
@@ -147,16 +148,24 @@ const PlanetsQueryWrapper = ({ currentBlock }: { currentBlock: number }) => {
   );
 }
 
-function Territories() {
+const MapBlank = () => {
   const { loading, error, data } = useQuery(BLOCK);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
   return (
+    <div>
+      <PlanetsQueryWrapper currentBlock={data._meta.block.number} currentSpace={data.space} />
+    </div>
+  );
+}
+
+const Territories = () => {
+  return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h2>Faction Territories</h2>
-      <PlanetsQueryWrapper currentBlock={data._meta.block.number} />
+      <MapBlank />
     </div>
   );
 }
