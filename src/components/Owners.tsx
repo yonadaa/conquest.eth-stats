@@ -10,7 +10,7 @@ const OWNERS = gql`
     owners(first: 1000, orderBy:$orderBy, orderDirection:desc) {
       id
       currentStake
-      tokenBalance
+      playTokenBalance
       alliances {
         alliance {
           id
@@ -37,7 +37,7 @@ export const OwnersTable = ({ owners }: { owners: any[] }) => {
           <th>{i + 1}</th>
           <th>{formatOwner(owner)}</th>
           <th>{formatTokens(owner.currentStake)}</th>
-          <th>{formatTokens(owner.tokenBalance)}</th>
+          <th>{formatTokens(owner.playTokenBalance)}</th>
           <td>{owner.alliances.length > 0 ? owner.alliances.map((a: any) => <span style={{ padding: 4 }}>{formatAllianceOnlyBlockie(a.alliance)}</span>) : "None"}</td>
         </tr>)
       }

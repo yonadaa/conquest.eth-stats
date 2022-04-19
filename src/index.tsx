@@ -9,9 +9,10 @@ import {
   ApolloProvider
 } from "@apollo/client";
 
+export const SUBGRAPH_URL = "https://subgraphs.etherplay.io/xdai/subgraphs/name/conquest-eth/conquest-defcon";
 
 const client = new ApolloClient({
-  uri: 'https://subgraphs.etherplay.io/xdai/subgraphs/name/conquest-eth/conquest-beta',
+  uri: SUBGRAPH_URL,
   cache: new InMemoryCache()
 });
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { SUBGRAPH_URL } from '..';
 
 function UsefulLinks() {
   return (
@@ -15,7 +16,7 @@ function UsefulLinks() {
           <a href="https://beta.conquest.etherplay.io/">Current game build</a>
         </li>
         <li>
-          <a href="https://thegraph.com/hosted-service/subgraph/conquest-eth/conquest-beta">Current Subgraph</a>
+          <a href={SUBGRAPH_URL}>Current Subgraph</a>
         </li>
         <li>
           <a href="https://etherplay.medium.com/">Conquest.eth Medium</a>

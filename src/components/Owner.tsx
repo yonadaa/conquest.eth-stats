@@ -14,7 +14,7 @@ const OWNER = gql`
     owner(id:$id) {
       id
       currentStake
-      tokenBalance
+      playTokenBalance
       tokenToWithdraw
       planets(orderBy:lastUpdated orderDirection:desc) {
         id
@@ -85,7 +85,7 @@ function Owner() {
                 </tr>
                 <tr>
                   <td><b>Balance</b></td>
-                  <td>{formatTokens(parseInt(owner.tokenBalance))}</td>
+                  <td>{formatTokens(parseInt(owner.playTokenBalance))}</td>
                 </tr>
                 <tr>
                   <td><b>Tokens to withdraw</b></td>
