@@ -17,7 +17,7 @@ const ALLIANCE = gql`
         owner {
           id
           currentStake
-          tokenBalance
+          playTokenBalance
         }
       }
     }
@@ -40,7 +40,7 @@ const OwnersTable = ({ owners }: { owners: any[] }) => {
           <th>{i + 1}</th>
           <th>{formatOwner(owner)}</th>
           <th>{formatTokens(owner.currentStake)}</th>
-          <th>{formatTokens(owner.tokenBalance)}</th>
+          <th>{formatTokens(owner.playTokenBalance)}</th>
         </tr>)
       }
     </tbody>
@@ -68,7 +68,7 @@ function Alliance() {
   }
 
   if (error) {
-    return <p>Error :(</p>;
+    return <p>Error: {error.toString()}</p>;
   }
 
   const alliance = data.alliance;
@@ -104,7 +104,7 @@ function Alliance() {
                 </tr>
                 <tr>
                   <td><b>Admin page</b></td>
-                  <td><a href={`https://basic-alliances-beta.conquest.etherplay.io/alliances/#${id}`}>Click here</a></td>
+                  <td><a href={`https://basic-alliances-defcon.conquest.etherplay.io/alliances/#${id}`}>Click here</a></td>
                 </tr>
                 <tr>
                   <td><b>Blockscout</b></td>

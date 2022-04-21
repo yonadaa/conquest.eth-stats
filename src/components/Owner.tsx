@@ -15,6 +15,7 @@ const OWNER = gql`
       id
       currentStake
       playTokenBalance
+      freePlayTokenBalance
       tokenToWithdraw
       planets(orderBy:lastUpdated orderDirection:desc) {
         id
@@ -84,8 +85,12 @@ function Owner() {
                   <td>{formatTokens(parseInt(owner.currentStake))}</td>
                 </tr>
                 <tr>
-                  <td><b>Balance</b></td>
+                  <td><b>PLAY Balance</b></td>
                   <td>{formatTokens(parseInt(owner.playTokenBalance))}</td>
+                </tr>
+                <tr>
+                  <td><b>Free PLAY Balance</b></td>
+                  <td>{formatTokens(parseInt(owner.freePlayTokenBalance))}</td>
                 </tr>
                 <tr>
                   <td><b>Tokens to withdraw</b></td>
@@ -93,7 +98,7 @@ function Owner() {
                 </tr>
                 <tr>
                   <td><b>Contact details</b></td>
-                  <td><a href={`https://account-service-beta.rim.workers.dev/get/${data.owner.id}`}>Click here</a></td>
+                  <td><a href={`https://account-service-defcon.rim.workers.dev/get/${data.owner.id}`}>Click here</a></td>
                 </tr>
                 <tr>
                   <td><b>Blockscout</b></td>
