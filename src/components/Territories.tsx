@@ -138,7 +138,7 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace }: { currentBlock: num
       {data.space ?
         <NearestNeighbourCanvas planets={data.planets.concat(data.planets2)}
           currentSpace={currentSpace} /> :
-        <canvas width={(data.space.minX - (-data.space.maxX)) * SCALING_FACTOR} height={(data.space.minY - (-data.space.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />
+        <canvas width={(currentSpace.minX - (-currentSpace.maxX)) * SCALING_FACTOR} height={(currentSpace.minY - (-currentSpace.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />
       }
       <div>
         <label htmlFor="customRange1" className="form-label">View at block: <a href={`https://blockscout.com/xdai/mainnet/block/${block}`}>{block}</a></label>
