@@ -62,7 +62,7 @@ const PLANETS = gql`
   }
 `
 
-const SCALING_FACTOR = 5;
+const SCALING_FACTOR = 6;
 const BASE_PLANET_DIVISOR = 15;
 const STEP = 2;
 const MAX_DISTANCE = 10;
