@@ -62,8 +62,8 @@ const PLANETS = gql`
   }
 `
 
-const SCALING_FACTOR = 3;
-const BASE_PLANET_SIZE = 40;
+const SCALING_FACTOR = 5;
+const BASE_PLANET_DIVISOR = 15;
 const STEP = 2;
 const MAX_DISTANCE = 10;
 const distance = (a: any, b: any) => Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
@@ -73,12 +73,12 @@ const drawPlanet = (context: any, planet: any, space: any) => {
     context.fillStyle = addressToColor(planet.owner.id);
   }
   context.beginPath();
-  context.arc((planet.x - (- space.minX)) * SCALING_FACTOR, (planet.y - (-space.minY)) * SCALING_FACTOR, SCALING_FACTOR * (planet.stakeDeposited / (10 ** 18) / BASE_PLANET_SIZE), 0, 2 * Math.PI);
+  context.arc((planet.x - (- space.minX)) * SCALING_FACTOR, (planet.y - (-space.minY)) * SCALING_FACTOR, SCALING_FACTOR * (planet.stakeDeposited / (10 ** 18) / BASE_PLANET_DIVISOR), 0, 2 * Math.PI);
   context.stroke();
   context.fill();
   if (planet.reward > 0) {
     context.strokeStyle = 'black';
-    const scale = SCALING_FACTOR * (planet.stakeDeposited / (10 ** 18) / BASE_PLANET_SIZE);
+    const scale = SCALING_FACTOR * (planet.stakeDeposited / (10 ** 18) / BASE_PLANET_DIVISOR);
     context.strokeRect((planet.x - (- space.minX)) * SCALING_FACTOR - scale / 2, (planet.y - (-space.minY)) * SCALING_FACTOR - scale / 2, scale, scale);
   }
 }
