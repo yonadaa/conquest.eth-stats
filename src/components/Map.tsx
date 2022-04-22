@@ -63,7 +63,7 @@ const PLANETS = gql`
 
 export const FIRST_BLOCK = 21259602;
 export const BLOCK_STEP = 12500;
-const SCALING_FACTOR = 2.25;
+const SCALING_FACTOR = 5;
 const drawPlanet = (context: any, planet: any, space: any) => {
   context.beginPath();
   context.arc((planet.x - (- space.minX)) * SCALING_FACTOR, (planet.y - (-space.minY)) * SCALING_FACTOR, SCALING_FACTOR * (planet.stakeDeposited / (10 ** 18) / 20), 0, 2 * Math.PI);
