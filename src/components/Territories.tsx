@@ -63,7 +63,7 @@ const PLANETS = gql`
 `
 
 const SCALING_FACTOR = 6;
-const BASE_PLANET_DIVISOR = 15;
+const BASE_PLANET_DIVISOR = 13;
 const STEP = 0.5;
 const MAX_DISTANCE = 10;
 const distance = (a: any, b: any) => Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
