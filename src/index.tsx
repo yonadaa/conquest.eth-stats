@@ -1,19 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider
-} from "@apollo/client";
-
-export const SUBGRAPH_URL = "https://subgraphs.etherplay.io/xdai/subgraphs/name/conquest-eth/conquest-defcon";
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { SUBGRAPH_URL } from "./components/constants.ts";
 
 const client = new ApolloClient({
   uri: SUBGRAPH_URL,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 ReactDOM.render(
@@ -22,7 +17,7 @@ ReactDOM.render(
       <App />
     </ApolloProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

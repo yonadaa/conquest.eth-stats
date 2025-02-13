@@ -1,5 +1,10 @@
-import React from 'react';
-import { SUBGRAPH_URL } from '..';
+import {
+  CURRENT_CLIENT,
+  KNOWLEDGE_BASE,
+  MEDIUM,
+  SUBGRAPH_URL,
+  VIDEO,
+} from "./constants.ts";
 
 function UsefulLinks() {
   return (
@@ -7,22 +12,21 @@ function UsefulLinks() {
       <h1>Useful Links</h1>
       <ul>
         <li>
-          <a href="https://knowledge.conquest.etherplay.io/">conquest.eth Knowledge Base</a>
+          <a href={KNOWLEDGE_BASE}>conquest.eth Knowledge Base</a>
         </li>
         <li>
-          <a href="https://youtu.be/4rO4b1SsONU">"A game on L2" by Ronan Sandford</a>
+          <a href={VIDEO}>"A game on L2" by Ronan Sandford</a>
         </li>
         <li>
-          <a href="https://beta.conquest.etherplay.io/">Current game build</a>
+          <a href={CURRENT_CLIENT}>Current game build</a>
         </li>
         <li>
           <a href={SUBGRAPH_URL}>Current Subgraph</a>
         </li>
         <li>
-          <a href="https://etherplay.medium.com/">Conquest.eth Medium</a>
+          <a href={MEDIUM}>Conquest.eth Medium</a>
         </li>
       </ul>
-
     </div>
   );
 }
