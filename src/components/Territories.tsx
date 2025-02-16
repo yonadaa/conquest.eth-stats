@@ -128,13 +128,12 @@ const NearestNeighbourCanvas = ({
           } else {
             context.fillStyle = "black";
           }
-          context.beginPath();
-          context.arc(
+
+          context.fillRect(
             (x - -space.minX) * SCALING_FACTOR,
             (y - -space.minY) * SCALING_FACTOR,
             SCALING_FACTOR * STEP,
-            0,
-            2 * Math.PI
+            SCALING_FACTOR * STEP
           );
           context.fill();
         }
