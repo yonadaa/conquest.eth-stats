@@ -4,3 +4,5 @@ export const KNOWLEDGE_BASE = "https://knowledge.conquest.etherplay.io";
 export const VIDEO = "https://youtu.be/4rO4b1SsONU";
 export const CURRENT_CLIENT = "https://beta.conquest.etherplay.io";
 export const MEDIUM = "https://etherplay.medium.com/";
+
+export const FIRST_BLOCK = 38300000;

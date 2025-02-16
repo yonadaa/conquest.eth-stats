@@ -1,34 +1,32 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  useQuery,
-  gql
-} from "@apollo/client";
+import React, { useEffect, useRef, useState } from "react";
+import { useQuery, gql } from "@apollo/client";
+import { FIRST_BLOCK } from "./constants";
 
 const BLOCK = gql`
   query {
-    _meta{
+    _meta {
       block {
         number
       }
     }
-    space(id:"Space") {
+    space(id: "Space") {
       minX
       maxX
       minY
       maxY
     }
   }
-`
+`;
 
 const PLANETS = gql`
   query GetPlanets($block: Int) {
-    space(id:"Space", block:{number: $block}) {
+    space(id: "Space", block: { number: $block }) {
       minX
       maxX
       minY
       maxY
     }
-    planets(first: 1000, block:{number: $block}) {
+    planets(first: 1000, block: { number: $block }) {
       id
       x
       y
@@ -43,7 +41,7 @@ const PLANETS = gql`
         }
       }
     }
-    planets2: planets(first: 1000, skip:1000, block:{number: $block}) {
+    planets2: planets(first: 1000, skip: 1000, block: { number: $block }) {
       id
       x
       y
@@ -59,53 +57,90 @@ const PLANETS = gql`
       }
     }
   }
-`
+`;
 
-export const FIRST_BLOCK = 21659602;
 export const BLOCK_STEP = 2000;
 const SCALING_FACTOR = 5;
 const drawPlanet = (context: any, planet: any, space: any) => {
   context.beginPath();
-  context.arc((planet.x - (- space.minX)) * SCALING_FACTOR, (planet.y - (-space.minY)) * SCALING_FACTOR, SCALING_FACTOR * (planet.stakeDeposited / (10 ** 18) / 20), 0, 2 * Math.PI);
+  context.arc(
+    (planet.x - -space.minX) * SCALING_FACTOR,
+    (planet.y - -space.minY) * SCALING_FACTOR,
+    SCALING_FACTOR * (planet.stakeDeposited / 10 ** 18 / 20),
+    0,
+    2 * Math.PI
+  );
   context.stroke();
   context.fill();
   if (planet.reward > 0) {
-    context.strokeStyle = 'black';
-    const scale = SCALING_FACTOR * (planet.stakeDeposited / (10 ** 18) / 20);
-    context.strokeRect((planet.x - (- space.minX)) * SCALING_FACTOR - scale / 2, (planet.y - (-space.minY)) * SCALING_FACTOR - scale / 2, scale, scale);
-    context.strokeStyle = 'grey';
+    context.strokeStyle = "black";
+    const scale = SCALING_FACTOR * (planet.stakeDeposited / 10 ** 18 / 20);
+    context.strokeRect(
+      (planet.x - -space.minX) * SCALING_FACTOR - scale / 2,
+      (planet.y - -space.minY) * SCALING_FACTOR - scale / 2,
+      scale,
+      scale
+    );
+    context.strokeStyle = "grey";
   }
-}
+};
 
 export const addressToColor = (address: string) => "#" + address.slice(3, 9);
 
-export const PlanetCanvas = ({ planets, width, height, currentSpace, condition }: { planets: any[], width: number, height: number, currentSpace: any, condition: (p: any) => string }) => {
+export const PlanetCanvas = ({
+  planets,
+  width,
+  height,
+  currentSpace,
+  condition,
+}: {
+  planets: any[];
+  width: number;
+  height: number;
+  currentSpace: any;
+  condition: (p: any) => string;
+}) => {
   const canvas = useRef<any>();
 
   useEffect(() => {
-    const context = canvas.current.getContext('2d');
-    context.fillStyle = 'white';
-    context.fillRect(0, 0, 10000, 10000)
-    context.fillStyle = 'black';
+    const context = canvas.current.getContext("2d");
+    context.fillStyle = "white";
+    context.fillRect(0, 0, 10000, 10000);
+    context.fillStyle = "black";
     context.fillRect(0, parseInt(currentSpace.minY) * SCALING_FACTOR, 10000, 1);
     context.fillRect(parseInt(currentSpace.minX) * SCALING_FACTOR, 0, 1, 10000);
-    context.strokeStyle = 'grey';
+    context.strokeStyle = "grey";
 
-    planets.forEach(p => {
+    planets.forEach((p) => {
       context.fillStyle = condition(p);
-      drawPlanet(context, p, currentSpace)
-    })
-  }, [planets, currentSpace, condition])
+      drawPlanet(context, p, currentSpace);
+    });
+  }, [planets, currentSpace, condition]);
 
-  return <canvas ref={canvas} width={width} height={height} style={{ border: "solid" }} />;
-}
+  return (
+    <canvas
+      ref={canvas}
+      width={width}
+      height={height}
+      style={{ border: "solid" }}
+    />
+  );
+};
 
-const PlanetsQueryWrapper = ({ currentBlock, currentSpace, condition }: { currentBlock: number, currentSpace: any, condition: (p: any) => string }) => {
+const PlanetsQueryWrapper = ({
+  currentBlock,
+  currentSpace,
+  condition,
+}: {
+  currentBlock: number;
+  currentSpace: any;
+  condition: (p: any) => string;
+}) => {
   const [block, setBlock] = useState(currentBlock);
 
   const { loading, error, data } = useQuery(PLANETS, {
     variables: { block },
-    fetchPolicy: 'network-only'
+    fetchPolicy: "network-only",
   });
 
   if (error) return <p>Error: {error}</p>;
@@ -113,23 +148,43 @@ const PlanetsQueryWrapper = ({ currentBlock, currentSpace, condition }: { curren
   return (
     <div>
       <div>
-        {!loading && data.space ?
+        {!loading && data.space ? (
           <PlanetCanvas
             condition={condition}
             planets={data.planets.concat(data.planets2)}
             currentSpace={currentSpace}
-            width={(currentSpace.minX - (-currentSpace.maxX)) * SCALING_FACTOR}
-            height={(currentSpace.minY - (-currentSpace.maxY)) * SCALING_FACTOR}
-          /> :
-          <canvas width={(currentSpace.minX - (-currentSpace.maxX)) * SCALING_FACTOR} height={(currentSpace.minY - (-currentSpace.maxY)) * SCALING_FACTOR} style={{ border: "solid" }} />}
+            width={(currentSpace.minX - -currentSpace.maxX) * SCALING_FACTOR}
+            height={(currentSpace.minY - -currentSpace.maxY) * SCALING_FACTOR}
+          />
+        ) : (
+          <canvas
+            width={(currentSpace.minX - -currentSpace.maxX) * SCALING_FACTOR}
+            height={(currentSpace.minY - -currentSpace.maxY) * SCALING_FACTOR}
+            style={{ border: "solid" }}
+          />
+        )}
       </div>
       <div>
-        <label htmlFor="customRange1" className="form-label">View at block: <a href={`https://blockscout.com/xdai/mainnet/block/${block}`}>{block}</a></label>
-        <input type="range" className="form-range" id="customRange1" min={FIRST_BLOCK} max={currentBlock} step={BLOCK_STEP} value={block} onChange={(e) => setBlock(parseInt(e.target.value))}></input>
+        <label htmlFor="customRange1" className="form-label">
+          View at block:{" "}
+          <a href={`https://blockscout.com/xdai/mainnet/block/${block}`}>
+            {block}
+          </a>
+        </label>
+        <input
+          type="range"
+          className="form-range"
+          id="customRange1"
+          min={FIRST_BLOCK}
+          max={currentBlock}
+          step={BLOCK_STEP}
+          value={block}
+          onChange={(e) => setBlock(parseInt(e.target.value))}
+        ></input>
       </div>
-    </div >
+    </div>
   );
-}
+};
 
 export const MapBlank = ({ condition }: { condition: (p: any) => string }) => {
   const { loading, error, data } = useQuery(BLOCK);
@@ -139,25 +194,49 @@ export const MapBlank = ({ condition }: { condition: (p: any) => string }) => {
 
   return (
     <div>
-      <PlanetsQueryWrapper currentBlock={data._meta.block.number} currentSpace={data.space} condition={condition} />
+      <PlanetsQueryWrapper
+        currentBlock={data._meta.block.number}
+        currentSpace={data.space}
+        condition={condition}
+      />
     </div>
   );
-}
+};
 
 function Map() {
   const [state, setState] = useState(0);
 
   return (
     <div>
-      <button className='btn btn-primary m-1' onClick={() => setState(state === 2 ? 0 : state + 1)}>{state === 0 ? "Showing only owners" : state === 1 ? "Showing only alliances" : "Showing alliance or owner"}</button>
+      <button
+        className="btn btn-primary m-1"
+        onClick={() => setState(state === 2 ? 0 : state + 1)}
+      >
+        {state === 0
+          ? "Showing only owners"
+          : state === 1
+          ? "Showing only alliances"
+          : "Showing alliance or owner"}
+      </button>
       <MapBlank
         condition={
-          state === 0 ?
-            ((p: any) => p.owner ? addressToColor(p.owner.id) : 'black') :
-            state === 1 ?
-              ((p: any) => (p.owner && p.owner.alliances.length > 0) ? addressToColor(p.owner.alliances[0].alliance.id) : 'white') :
-              ((p: any) => p.owner ? addressToColor(p.owner && p.owner.alliances.length > 0 ? p.owner.alliances[0].alliance.id : p.owner.id) : 'black')
-        } />
+          state === 0
+            ? (p: any) => (p.owner ? addressToColor(p.owner.id) : "black")
+            : state === 1
+            ? (p: any) =>
+                p.owner && p.owner.alliances.length > 0
+                  ? addressToColor(p.owner.alliances[0].alliance.id)
+                  : "white"
+            : (p: any) =>
+                p.owner
+                  ? addressToColor(
+                      p.owner && p.owner.alliances.length > 0
+                        ? p.owner.alliances[0].alliance.id
+                        : p.owner.id
+                    )
+                  : "black"
+        }
+      />
     </div>
   );
 }

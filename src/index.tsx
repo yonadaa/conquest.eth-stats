@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { SUBGRAPH_URL } from "./components/constants.ts";
+import { SUBGRAPH_URL } from "./components/constants";
 
 const client = new ApolloClient({
   uri: SUBGRAPH_URL,

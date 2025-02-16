@@ -4,7 +4,7 @@ import {
   MEDIUM,
   SUBGRAPH_URL,
   VIDEO,
-} from "./constants.ts";
+} from "./constants";
 
 function UsefulLinks() {
   return (
