@@ -3,6 +3,19 @@ import { useQuery, gql } from "@apollo/client";
 import { addressToColor, BLOCK_STEP } from "./Map";
 import { FIRST_BLOCK } from "./constants";
 
+type Coord = { x: number; y: number };
+type Space = { minX: number; maxX: number; minY: number; maxY: number };
+type Planet = {
+  id: string;
+  x: number;
+  y: number;
+  stakeDeposited: number;
+  reward: number;
+  owner: {
+    id: string;
+  };
+};
+
 const BLOCK = gql`
   query {
     _meta {
@@ -37,19 +50,8 @@ const PLANETS = gql`
         id
       }
     }
-    planets2: planets(first: 1000, skip: 1000, block: { number: $block }) {
-      id
-      x
-      y
-      stakeDeposited
-      reward
-      owner {
-        id
-      }
-    }
   }
 `;
-type Coord = { x: number; y: number };
 
 const BASE_PLANET_DIVISOR = 13;
 const SCALING_FACTOR = 6;
@@ -58,7 +60,11 @@ const MAX_DISTANCE = 10;
 const distance = (a: Coord, b: Coord) =>
   Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 
-const drawPlanet = (context: any, planet: any, space: any) => {
+const drawPlanet = (
+  context: CanvasRenderingContext2D,
+  planet: Planet,
+  space: Space
+) => {
   if (planet.owner) {
     context.fillStyle = addressToColor(planet.owner.id);
   }
@@ -85,26 +91,29 @@ const drawPlanet = (context: any, planet: any, space: any) => {
   }
 };
 
+const AXIS_LENGTH = 10000;
+const AXIS_THICKNESS = 0.25;
+
+function drawAxes(context: CanvasRenderingContext2D, space: Space) {
+  context.fillStyle = "black";
+  context.fillRect(0, space.minY * SCALING_FACTOR, AXIS_LENGTH, AXIS_THICKNESS);
+  context.fillRect(space.minX * SCALING_FACTOR, 0, AXIS_THICKNESS, AXIS_LENGTH);
+}
+
 const NearestNeighbourCanvas = ({
   planets,
   space,
 }: {
-  planets: {
-    id: string;
-    x: number;
-    y: number;
-    stakeDeposited: number;
-    reward: number;
-    owner: {
-      id: string;
-    };
-  }[];
-  space: { minX: number; maxX: number; minY: number; maxY: number };
+  planets: Planet[];
+  space: Space;
 }) => {
-  const canvas = useRef<any>();
+  const canvas = useRef<HTMLCanvasElement>();
 
   useEffect(() => {
-    const context = canvas.current.getContext("2d");
+    const context = canvas?.current?.getContext("2d");
+    if (!context) {
+      return;
+    }
     context.fillStyle = "black";
     context.fillRect(0, 0, 10000, 10000);
     if (planets && planets.length > 0) {
@@ -138,9 +147,7 @@ const NearestNeighbourCanvas = ({
           context.fill();
         }
       }
-      context.fillStyle = "black";
-      context.fillRect(0, (0 - -space.minY) * SCALING_FACTOR, 10000, 0.25);
-      context.fillRect((0 - -space.minX) * SCALING_FACTOR, 0, 0.25, 10000);
+      drawAxes(context, space);
 
       planets.forEach((planet) => {
         drawPlanet(context, planet, space);
@@ -150,6 +157,7 @@ const NearestNeighbourCanvas = ({
 
   return (
     <canvas
+      //@ts-ignore
       ref={canvas}
       width={(space.minX - -space.maxX) * SCALING_FACTOR}
       height={(space.minY - -space.maxY) * SCALING_FACTOR}
@@ -163,7 +171,7 @@ const PlanetsQueryWrapper = ({
   currentSpace,
 }: {
   currentBlock: number;
-  currentSpace: any;
+  currentSpace: Space;
 }) => {
   const [block, setBlock] = useState(currentBlock);
 
@@ -178,10 +186,7 @@ const PlanetsQueryWrapper = ({
   return (
     <div>
       {data.space ? (
-        <NearestNeighbourCanvas
-          planets={data.planets.concat(data.planets2)}
-          space={currentSpace}
-        />
+        <NearestNeighbourCanvas planets={data.planets} space={currentSpace} />
       ) : (
         <canvas
           width={(currentSpace.minX - -currentSpace.maxX) * SCALING_FACTOR}
